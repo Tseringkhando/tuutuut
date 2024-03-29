@@ -1,0 +1,159 @@
+<!-- Submitted by Tsering Khando Lama C0916140 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Race -- Tuut Tuut</title>
+    <!-- Adding required css for tables -->
+    <style>
+        body {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            text-align: center;
+            background: #e4e4e4;
+        }
+
+        h2 {
+            font-weight: normal;
+        }
+
+        table {
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        th {
+            color: #fff;
+        }
+
+        th,
+        td {
+
+            border: 1.5px solid #1f1212;
+            text-align: center;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #911818;
+        }
+
+        .honk-row {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Car Race Results (Remaining Gas)</h2>
+    <!-- Race Results Table -->
+    <table id="raceTable">
+        <tr>
+            <th>Turn</th>
+            <th>Honda CR-V</th>
+            <th>Ford F-150</th>
+            <th>BMW X5</th>
+            <th>Mazda CX-5</th>
+            <th>Audi Q7</th>
+            <th>Kia Forte</th>
+        </tr>
+    </table>
+
+    <!-- Table for Honk method -->
+    <h2>Honk Results</h2>
+
+    <!-- Honk Results Table -->
+    <table id="honkTable">
+        <tr>
+            <th>Honk</th>
+            <th>Brand</th>
+            <th>Model</th>
+            <th>Year</th>
+            <th>Color</th>
+            <th>Price</th>
+            <th>Gas Remaining (ltrs.)</th>
+        </tr>
+    </table>
+
+    <!-- required JS  -->
+    <script>
+        // class Car with Brand, Model, Year, Color, Price (Use appropriate data types)
+        class Car {
+            constructor(brand, model, year, color, price, gas) {
+                this.brand = brand;
+                this.model = model;
+                this.year = year;
+                this.color = color;
+                this.price = price;
+                this.gas = gas;
+            }
+            // The honk method here
+            honk() {
+                let info = `Brand: ${this.brand}, Model: ${this.model}, Year: ${this.year}, Color: ${this.color}, Price: ${this.price}`;
+                console.log("Tuut tuut. " + info);
+
+                let honkTable = document.getElementById("honkTable");
+                let row = honkTable.insertRow();
+                row.insertCell().textContent = "Tuut tuut";
+                row.insertCell().textContent = this.brand;
+                row.insertCell().textContent = this.model;
+                row.insertCell().textContent = this.year;
+                row.insertCell().textContent = this.color;
+                row.insertCell().textContent = this.price;
+                row.insertCell().textContent = this.gas;
+
+            }
+            // Method to calculate each  car's remaining gas in liters according to their build
+            loseGas(currentYear) {
+                let yearsOld = currentYear - this.year;
+                let gasLoss = 5 + yearsOld; // Each year old car loses 1 more liter
+                this.gas -= gasLoss <= this.gas ? gasLoss : this.gas; // Ensure gas does not go below 0
+            }
+        }
+
+        // Method to simulate car race for 7 turns
+        function race(cars) {
+            const raceTable = document.getElementById("raceTable");
+            let currentYear = getCurrentYear();
+
+            for (let i = 1; i <= 7; i++) {
+                let newRow = raceTable.insertRow(-1);
+                let turnCell = newRow.insertCell(0);
+                turnCell.textContent = "Turn " + i;
+
+                cars.forEach((car, index) => {
+                    car.loseGas(currentYear);
+                    let gasCell = newRow.insertCell(index + 1);
+                    gasCell.textContent = car.gas;
+                });
+            }
+        }
+
+        // Method to get current year (it is 2024 now)
+        function getCurrentYear() {
+            return new Date().getFullYear();
+        }
+
+        // Creating Car instances
+        const cars = [
+            new Car("Honda", "CR-V", 2023, "Red", 50000, 45),
+            new Car("Ford", "F-150", 2020, "Black", 25000, 30),
+            new Car("BMW", "X5", 2022, "Green", 60000, 65),
+            new Car("Mazda", "CX-5", 2019, "White", 15000, 60),
+            new Car("Audi", "Q7", 2018, "Silver", 52000, 47),
+            new Car("Kia", "Forte", 2020, "Blue", 21000, 56)
+        ];
+
+        // Simulate race
+        race(cars);
+
+        // Invoke honk method for each car
+        cars.forEach(car => {
+            car.honk();
+        });
+    </script>
+
+</body>
+</html>
